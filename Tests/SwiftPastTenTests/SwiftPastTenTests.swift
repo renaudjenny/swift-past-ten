@@ -79,6 +79,7 @@ final class SwiftPastTenTests: XCTestCase {
       ("testWhenIAskForThirtyMinutesThenIReadHalfPastXHour", testWhenIAskForThirtyMinutesThenIReadHalfPastXHour),
       ("testWhenIAskForFifteenMinutesThenIReadQuarterPastXHour", testWhenIAskForFifteenMinutesThenIReadQuarterPastXHour),
       ("testWhenIAskForFortyFiveMinutesThenIReadQuarterToXPlusOneHour", testWhenIAskForFortyFiveMinutesThenIReadQuarterToXPlusOneHour),
-      ("testWhenIAskForZeroHourThenIReadMidnight", testWhenIAskForZeroHourThenIReadMidnight)
+      ("testWhenIAskForZeroHourThenIReadMidnight", testWhenIAskForZeroHourThenIReadMidnight),
+      ("testWhenIAskForANonWellFormattedTimeThenIReadAnErrorThatMyTimeIsNotValid", testWhenIAskForANonWellFormattedTimeThenIReadAnErrorThatMyTimeIsNotValid)
   ]
 }
