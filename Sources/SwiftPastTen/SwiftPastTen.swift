@@ -1,13 +1,15 @@
 import Foundation
 
-struct SwiftPastTen {
-  var numberFormatter: NumberFormatter {
+public struct SwiftPastTen {
+  private var numberFormatter: NumberFormatter {
     let formatter = NumberFormatter()
     formatter.numberStyle = .spellOut
     return formatter
   }
 
-  func tell(time: String) throws -> String {
+  public init() { }
+
+  public func tell(time: String) throws -> String {
     let splittedTime = time.split(separator: ":")
     guard splittedTime.count == 2 else {
       throw FormatError.wrongFormat
