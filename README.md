@@ -1,3 +1,3 @@
 # SwiftPastTen
 
-A description of this package.
+A Swift framework that telling the time passing a given time format (HH:mm) into "British"
