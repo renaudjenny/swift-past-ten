@@ -28,65 +28,65 @@ public struct SwiftPastTen {
     }
 
     if (hour <= 12) {
-      return literalTime(hour: hour, minutes: minutes, period: "AM")
+      return try literalTime(hour: hour, minutes: minutes, period: "AM")
     } else {
-      return literalTime(hour: hour - 12, minutes: minutes, period: "PM")
+      return try literalTime(hour: hour - 12, minutes: minutes, period: "PM")
     }
   }
 
-  private func literalTime(hour: Int, minutes: Int, period: String) -> String {
+  private func literalTime(hour: Int, minutes: Int, period: String) throws -> String {
     switch minutes {
     case 0:
-      let literalHour = self.literalHour(hour: hour)
+      let literalHour = try self.literalHour(hour: hour)
       return "It's \(literalHour) o'clock \(period)."
     case 15:
-      let literalHour = self.literalHour(hour: hour, period: period)
+      let literalHour = try self.literalHour(hour: hour, period: period)
       return "It's quarter past \(literalHour)"
     case 30:
-      let literalHour = self.literalHour(hour: hour, period: period)
+      let literalHour = try self.literalHour(hour: hour, period: period)
       return "It's half past \(literalHour)"
     case 45:
-      let literalHour = self.literalHourPlusOne(hour: hour, period: period)
+      let literalHour = try self.literalHourPlusOne(hour: hour, period: period)
       return "It's quarter to \(literalHour)"
     case 31...44, 46...59:
-      return "It's \(self.literalHourAndThirtyLastMinutes(hour: hour, minutes: minutes, period: period))"
+      return "It's \(try self.literalHourAndThirtyLastMinutes(hour: hour, minutes: minutes, period: period))"
     default:
-      return "It's \(self.literalHourAndThirtyFirstMinutes(hour: hour, minutes: minutes, period: period))"
+      return "It's \(try self.literalHourAndThirtyFirstMinutes(hour: hour, minutes: minutes, period: period))"
     }
   }
 
-  private func literalHour(hour: Int, period: String? = nil) -> String {
+  private func literalHour(hour: Int, period: String? = nil) throws -> String {
     guard hour != 0 else { return "midnight" }
 
-    let literalHour = self.numberFormatter.string(from: NSNumber(value: hour))!
+    guard let literalHour = self.numberFormatter.string(from: NSNumber(value: hour)) else { throw FormatError.cannotParseNumber }
 
     guard let period = period else { return literalHour }
 
     return "\(literalHour) \(period)"
   }
 
-  private func literalHourAndThirtyFirstMinutes(hour: Int, minutes: Int, period: String) -> String {
-    let hour = self.literalHour(hour: hour, period: period)
-    let minutes = self.numberFormatter.string(from: NSNumber(value: minutes))!
+  private func literalHourAndThirtyFirstMinutes(hour: Int, minutes: Int, period: String) throws -> String {
+    let hour = try self.literalHour(hour: hour, period: period)
+    guard let minutes = self.numberFormatter.string(from: NSNumber(value: minutes)) else { throw FormatError.cannotParseNumber }
     return "\(minutes) past \(hour)"
   }
 
-  private func literalHourAndThirtyLastMinutes(hour: Int, minutes: Int, period: String) -> String {
-    let hourPlusOne = self.literalHourPlusOne(hour: hour, period: period)
+  private func literalHourAndThirtyLastMinutes(hour: Int, minutes: Int, period: String) throws -> String {
+    let hourPlusOne = try self.literalHourPlusOne(hour: hour, period: period)
     let minutesToNextHour = -(minutes - 60)
-    let minutes = self.numberFormatter.string(from: NSNumber(value: minutesToNextHour))!
+    guard let minutes = self.numberFormatter.string(from: NSNumber(value: minutesToNextHour)) else { throw FormatError.cannotParseNumber }
     return "\(minutes) to \(hourPlusOne)"
   }
 
-  private func literalHourPlusOne(hour: Int, period: String) -> String {
+  private func literalHourPlusOne(hour: Int, period: String) throws -> String {
     let hourPlusOne = hour + 1
     switch hourPlusOne {
     case 1..<12:
-      return self.literalHour(hour: hourPlusOne, period: period)
+      return try self.literalHour(hour: hourPlusOne, period: period)
     case 12:
-      return self.literalHour(hour: 0)
+      return try self.literalHour(hour: 0)
     default:
-      return self.literalHour(hour: 1, period: period)
+      return try self.literalHour(hour: 1, period: period)
     }
   }
 }
