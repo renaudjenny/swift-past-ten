@@ -48,7 +48,7 @@ final class SwiftPastTenTests: XCTestCase {
     }
 
     let examplesPM: [String: String] = [
-      "19:55": "five to eight PM", "00:35": "twenty-five to one AM",
+      "19:55": "five to eight PM", "00:35": "twenty-five to one AM", "23:35": "twenty-five to midnight",
     ]
 
     try examplesPM.forEach { numericalHour, literalHour in
@@ -66,7 +66,7 @@ final class SwiftPastTenTests: XCTestCase {
     }
 
     let examplesPM: [String: String] = [
-      "23:30": "half past eleven PM", "13:30": "half past one PM"
+      "23:30": "half past eleven PM", "13:30": "half past one PM", "00:30": "half past midnight"
     ]
 
     try examplesPM.forEach { numericalHour, literalHour in
@@ -84,7 +84,7 @@ final class SwiftPastTenTests: XCTestCase {
     }
 
     let examplesPM: [String: String] = [
-      "21:15": "quarter past nine PM", "20:15": "quarter past eight PM"
+      "21:15": "quarter past nine PM", "20:15": "quarter past eight PM", "00:15": "quarter past midnight"
     ]
 
     try examplesPM.forEach { numericalHour, literalHour in
@@ -102,7 +102,7 @@ final class SwiftPastTenTests: XCTestCase {
     }
 
     let examplesPM: [String: String] = [
-      "21:45": "quarter to ten PM", "20:45": "quarter to nine PM"
+      "21:45": "quarter to ten PM", "20:45": "quarter to nine PM", "23:45": "quarter to midnight"
     ]
 
     try examplesPM.forEach { numericalHour, literalHour in

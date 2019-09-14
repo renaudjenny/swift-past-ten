@@ -79,10 +79,14 @@ public struct SwiftPastTen {
   }
 
   private func literalHourPlusOne(hour: Int, period: String) -> String {
-    if hour >= 12 {
+    let hourPlusOne = hour + 1
+    switch hourPlusOne {
+    case 1..<12:
+      return self.literalHour(hour: hourPlusOne, period: period)
+    case 12:
+      return self.literalHour(hour: 0)
+    default:
       return self.literalHour(hour: 1, period: period)
-    } else {
-      return self.literalHour(hour: hour + 1, period: period)
     }
   }
 }
