@@ -63,8 +63,9 @@ final class SwiftPastTenTests: XCTestCase {
 
   func testWhenIAskForNonFivishYMinutesThenIReadXHourYMinutes() throws {
     let examples: [String: String] = [
-      "1:01": "one, one AM", "2:02": "two, two AM",
-      "19:19": "seven, nineteen PM", "23:59": "eleven, fifty-nine PM"
+      "1:01": "one one AM", "2:02": "two two AM",
+      "19:19": "seven nineteen PM", "23:59": "eleven fifty-nine PM",
+      "00:03": "midnight three", "12:04": "twelve four"
     ]
 
     try examples.forEach { numericalHour, literalHour in
