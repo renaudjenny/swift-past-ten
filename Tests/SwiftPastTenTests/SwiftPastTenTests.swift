@@ -2,13 +2,13 @@ import XCTest
 @testable import SwiftPastTen
 
 final class SwiftPastTenTests: XCTestCase {
-  func testWhenIAskForAllClockHoursThenIReadAllOClockHours() throws {
+  func testWhenIAskForXHoursZeroMinutesThenIReadXHoursOClock() throws {
     let literalHoursAM: [Int: String] = [
       1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six",
       7: "seven", 8: "eight", 9: "nine", 10: "ten", 11: "eleven", 12: "twelve"
     ]
     try literalHoursAM.forEach { numericalHour, literalHour in
-      XCTAssertEqual(try SwiftPastTen().tell(time: "\(numericalHour):00"), "It's \(literalHour) o'clock AM.")
+      XCTAssertEqual(try SwiftPastTen().tell(time: "\(numericalHour):00"), "It's \(literalHour) o'clock.")
     }
 
     let literalHoursPM: [Int: String] = [
@@ -16,43 +16,59 @@ final class SwiftPastTenTests: XCTestCase {
       19: "seven", 20: "eight", 21: "nine", 22: "ten", 23: "eleven"
     ]
     try literalHoursPM.forEach { numericalHour, literalHour in
-      XCTAssertEqual(try SwiftPastTen().tell(time: "\(numericalHour):00"), "It's \(literalHour) o'clock PM.")
+      XCTAssertEqual(try SwiftPastTen().tell(time: "\(numericalHour):00"), "It's \(literalHour) o'clock in the afternoon.")
     }
   }
 
-  func testWhenIAskForXMinutesAfterYHourThenIReadXMinutesPastY() throws {
+  func testWhenIAskForFivishYMinutesAfterXHourThenIReadYMinutesPastXHour() throws {
     let examplesAM: [String: String] = [
-      "7:05": "five past seven AM", "12:25": "twenty-five past twelve AM"
+      "7:05": "five past seven AM", "8:10": "ten past eight AM",
+      "9:20": "twenty past nine AM", "12:25": "twenty-five past twelve"
     ]
 
     try examplesAM.forEach { numericalHour, literalHour in
-      XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour)")
+      XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour).")
     }
 
     let examplesPM: [String: String] = [
-      "19:05": "five past seven PM", "00:25": "twenty-five past midnight"
+      "19:05": "five past seven PM", "20:10": "ten past eight PM",
+      "14:20": "twenty past two PM", "00:25": "twenty-five past midnight"
     ]
 
     try examplesPM.forEach { numericalHour, literalHour in
-      XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour)")
+      XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour).")
     }
   }
 
-  func testWhenIAskForXMinutesBeforYHourThenIReadXMinutesToYPlusOne() throws {
+  func testWhenIAskForFivishYMinutesBeforeYHourThenIReadYMinutesToXPlusOneHour() throws {
     let examplesAM: [String: String] = [
-      "7:55": "five to eight AM", "12:35": "twenty-five to one AM",
+      "7:35": "twenty-five to eight AM", "8:40": "twenty to nine AM",
+      "9:50": "ten to ten AM", "11:50": "ten to twelve", //"12:55": "five to one PM"
     ]
 
     try examplesAM.forEach { numericalHour, literalHour in
-      XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour)")
+      XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour).")
     }
 
     let examplesPM: [String: String] = [
-      "19:55": "five to eight PM", "00:35": "twenty-five to one AM", "23:35": "twenty-five to midnight",
+      "00:35": "twenty-five to one AM", "13:40": "twenty to two PM",
+      "17:50": "ten to six PM", "19:55": "five to eight PM",
+      "23:35": "twenty-five to midnight",
     ]
 
     try examplesPM.forEach { numericalHour, literalHour in
-      XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour)")
+      XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour).")
+    }
+  }
+
+  func testWhenIAskForNonFivishYMinutesThenIReadXHourYMinutes() throws {
+    let examples: [String: String] = [
+      "1:01": "one, one AM", "2:02": "two, two AM",
+      "19:19": "seven, nineteen PM", "23:59": "eleven, fifty-nine PM"
+    ]
+
+    try examples.forEach { numericalHour, literalHour in
+      XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour).")
     }
   }
 
@@ -62,7 +78,7 @@ final class SwiftPastTenTests: XCTestCase {
     ]
 
     try examplesAM.forEach { numericalHour, literalHour in
-      XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour)")
+      XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour).")
     }
 
     let examplesPM: [String: String] = [
@@ -70,7 +86,7 @@ final class SwiftPastTenTests: XCTestCase {
     ]
 
     try examplesPM.forEach { numericalHour, literalHour in
-      XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour)")
+      XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour).")
     }
   }
 
@@ -80,7 +96,7 @@ final class SwiftPastTenTests: XCTestCase {
     ]
 
     try examplesAM.forEach { numericalHour, literalHour in
-      XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour)")
+      XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour).")
     }
 
     let examplesPM: [String: String] = [
@@ -88,7 +104,7 @@ final class SwiftPastTenTests: XCTestCase {
     ]
 
     try examplesPM.forEach { numericalHour, literalHour in
-      XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour)")
+      XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour).")
     }
   }
 
@@ -98,7 +114,7 @@ final class SwiftPastTenTests: XCTestCase {
     ]
 
     try examplesAM.forEach { numericalHour, literalHour in
-      XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour)")
+      XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour).")
     }
 
     let examplesPM: [String: String] = [
@@ -106,12 +122,12 @@ final class SwiftPastTenTests: XCTestCase {
     ]
 
     try examplesPM.forEach { numericalHour, literalHour in
-      XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour)")
+      XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour).")
     }
   }
 
   func testWhenIAskForZeroHourThenIReadMidnight() {
-    XCTAssertEqual(try SwiftPastTen().tell(time: "00:00"), "It's midnight")
+    XCTAssertEqual(try SwiftPastTen().tell(time: "00:00"), "It's midnight.")
   }
 
   func testWhenIAskForANonWellFormattedTimeThenIReadAnErrorThatMyTimeIsNotValid() {
@@ -130,9 +146,10 @@ final class SwiftPastTenTests: XCTestCase {
   }
 
   static var allTests = [
-      ("testWhenIAskForAllClockHoursThenIReadAllOClockHours", testWhenIAskForAllClockHoursThenIReadAllOClockHours),
-      ("testWhenIAskForXMinutesAfterYHourThenIReadXMinutesPastY", testWhenIAskForXMinutesAfterYHourThenIReadXMinutesPastY),
-      ("testWhenIAskForXMinutesBeforYHourThenIReadXMinutesToYPlusOne", testWhenIAskForXMinutesBeforYHourThenIReadXMinutesToYPlusOne),
+      ("testWhenIAskForXHoursZeroMinutesThenIReadXHoursOClock", testWhenIAskForXHoursZeroMinutesThenIReadXHoursOClock),
+      ("testWhenIAskForFivishYMinutesAfterXHourThenIReadYMinutesPastXHour", testWhenIAskForFivishYMinutesAfterXHourThenIReadYMinutesPastXHour),
+      ("testWhenIAskForFivishYMinutesBeforeYHourThenIReadYMinutesToXPlusOneHour", testWhenIAskForFivishYMinutesBeforeYHourThenIReadYMinutesToXPlusOneHour),
+      ("testWhenIAskForNonFivishYMinutesThenIReadXHourYMinutes", testWhenIAskForNonFivishYMinutesThenIReadXHourYMinutes),
       ("testWhenIAskForThirtyMinutesThenIReadHalfPastXHour", testWhenIAskForThirtyMinutesThenIReadHalfPastXHour),
       ("testWhenIAskForFifteenMinutesThenIReadQuarterPastXHour", testWhenIAskForFifteenMinutesThenIReadQuarterPastXHour),
       ("testWhenIAskForFortyFiveMinutesThenIReadQuarterToXPlusOneHour", testWhenIAskForFortyFiveMinutesThenIReadQuarterToXPlusOneHour),
