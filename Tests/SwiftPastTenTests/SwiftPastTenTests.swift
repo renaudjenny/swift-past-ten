@@ -43,7 +43,8 @@ final class SwiftPastTenTests: XCTestCase {
   func testWhenIAskForFivishYMinutesBeforeYHourThenIReadYMinutesToXPlusOneHour() throws {
     let examplesAM: [String: String] = [
       "7:35": "twenty-five to eight AM", "8:40": "twenty to nine AM",
-      "9:50": "ten to ten AM", "11:50": "ten to twelve", //"12:55": "five to one PM"
+      "9:50": "ten to ten AM", "11:50": "ten to twelve",
+      "12:55": "five to one PM"
     ]
 
     try examplesAM.forEach { numericalHour, literalHour in
@@ -111,7 +112,8 @@ final class SwiftPastTenTests: XCTestCase {
 
   func testWhenIAskForFortyFiveMinutesThenIReadQuarterToXPlusOneHour() throws {
     let examplesAM: [String: String] = [
-      "9:45": "quarter to ten AM", "8:45": "quarter to nine AM"
+      "9:45": "quarter to ten AM", "8:45": "quarter to nine AM",
+      "12:45": "quarter to one PM"
     ]
 
     try examplesAM.forEach { numericalHour, literalHour in

@@ -102,7 +102,7 @@ public struct SwiftPastTen {
       case .PM: return try self.literalHour(hour: 0)
       }
     default:
-      return try self.literalHour(hour: 1, period: period)
+      return try self.literalHour(hour: 1, period: .PM)
     }
   }
 }
