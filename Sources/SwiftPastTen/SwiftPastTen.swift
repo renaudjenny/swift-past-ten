@@ -60,10 +60,11 @@ public struct SwiftPastTen {
       }
     default:
       guard let literalMinutes = self.numberFormatter.string(from: NSNumber(value: minutes)) else { throw FormatError.cannotParseNumber }
+      let literalMinutesWithPotentialPrefix = minutes < 10 ? "O \(literalMinutes)" : literalMinutes
       if hour == 0 || hour == 12 {
-        return "It's \(try self.literalHour(hour: hour)) \(literalMinutes)."
+        return "It's \(try self.literalHour(hour: hour)) \(literalMinutesWithPotentialPrefix)."
       }
-      return "It's \(try self.literalHour(hour: hour)) \(literalMinutes) \(period)."
+      return "It's \(try self.literalHour(hour: hour)) \(literalMinutesWithPotentialPrefix) \(period)."
     }
   }
 
