@@ -27,7 +27,7 @@ public struct SwiftPastTen {
       return "It's midnight."
     }
 
-    if (hour <= 12) {
+    if hour <= 12 {
       return try literalTime(hour: hour, minutes: minutes, period: .AM)
     } else {
       return try literalTime(hour: hour - 12, minutes: minutes, period: .PM)
@@ -59,7 +59,9 @@ public struct SwiftPastTen {
         return "It's \(try self.literalHourAndThirtyLastMinutes(hour: hour, minutes: minutes, period: period))."
       }
     default:
-      guard let literalMinutes = self.numberFormatter.string(from: NSNumber(value: minutes)) else { throw FormatError.cannotParseNumber }
+      guard let literalMinutes = self.numberFormatter.string(from: NSNumber(value: minutes)) else {
+        throw FormatError.cannotParseNumber
+      }
       let literalMinutesWithPotentialPrefix = minutes < 10 ? "O \(literalMinutes)" : literalMinutes
       if hour == 0 || hour == 12 {
         return "It's \(try self.literalHour(hour: hour)) \(literalMinutesWithPotentialPrefix)."
@@ -71,7 +73,9 @@ public struct SwiftPastTen {
   private func literalHour(hour: Int, period: Period? = nil) throws -> String {
     guard hour != 0 else { return "midnight" }
 
-    guard let literalHour = self.numberFormatter.string(from: NSNumber(value: hour)) else { throw FormatError.cannotParseNumber }
+    guard let literalHour = self.numberFormatter.string(from: NSNumber(value: hour)) else {
+        throw FormatError.cannotParseNumber
+    }
     guard hour != 12 else { return literalHour }
 
     guard let period = period else { return literalHour }
@@ -81,14 +85,18 @@ public struct SwiftPastTen {
 
   private func literalHourAndThirtyFirstMinutes(hour: Int, minutes: Int, period: Period) throws -> String {
     let hour = try self.literalHour(hour: hour, period: period)
-    guard let minutes = self.numberFormatter.string(from: NSNumber(value: minutes)) else { throw FormatError.cannotParseNumber }
+    guard let minutes = self.numberFormatter.string(from: NSNumber(value: minutes)) else {
+        throw FormatError.cannotParseNumber
+    }
     return "\(minutes) past \(hour)"
   }
 
   private func literalHourAndThirtyLastMinutes(hour: Int, minutes: Int, period: Period) throws -> String {
     let hourPlusOne = try self.literalHourPlusOne(hour: hour, period: period)
     let minutesToNextHour = -(minutes - 60)
-    guard let minutes = self.numberFormatter.string(from: NSNumber(value: minutesToNextHour)) else { throw FormatError.cannotParseNumber }
+    guard let minutes = self.numberFormatter.string(from: NSNumber(value: minutesToNextHour)) else {
+        throw FormatError.cannotParseNumber
+    }
     return "\(minutes) to \(hourPlusOne)"
   }
 
