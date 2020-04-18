@@ -10,33 +10,32 @@ public struct SwiftPastTen {
     public init() { }
 
     public func tell(time: String) throws -> String {
-        let splittedTime = time.split(separator: ":")
-        guard splittedTime.count == 2 else {
+        let splitTime = time.split(separator: ":")
+        guard splitTime.count == 2 else {
             throw FormatError.wrongFormat
         }
-        let hourAsString = String(splittedTime[0])
+        let hourAsString = String(splitTime[0])
         guard let hour = Int(hourAsString), hour < 24 else {
             throw FormatError.wrongFormat
         }
-        let minutesAsString = String(splittedTime[1])
-        guard let minutes = Int(minutesAsString), minutes < 60 else {
+        let minuteAsString = String(splitTime[1])
+        guard let minute = Int(minuteAsString), minute < 60 else {
             throw FormatError.wrongFormat
         }
 
-        if hour == 0 && minutes == 0 {
+        if hour == 0 && minute == 0 {
             return "It's midnight."
         }
 
         if hour <= 12 {
-            return try literalTime(hour: hour, minutes: minutes, period: .AM)
+            return try literalTime(hour: hour, minute: minute, period: .AM)
         } else {
-            return try literalTime(hour: hour - 12, minutes: minutes, period: .PM)
+            return try literalTime(hour: hour - 12, minute: minute, period: .PM)
         }
     }
 
-    // TODO: rename minutes into minute
-    private func literalTime(hour: Int, minutes: Int, period: Period) throws -> String {
-        switch minutes {
+    private func literalTime(hour: Int, minute: Int, period: Period) throws -> String {
+        switch minute {
         case 0:
             return try exactHourTime(hour: hour, period: period)
         case 15:
@@ -51,7 +50,7 @@ public struct SwiftPastTen {
         case let x where x % 5 == 0:
             return try fiveMinuteTime(hour: hour, minute: x, period: period)
         default:
-            return try fallbackTime(hour: hour, minute: minutes, period: period)
+            return try fallbackTime(hour: hour, minute: minute, period: period)
         }
     }
 
@@ -66,10 +65,10 @@ public struct SwiftPastTen {
     private func fiveMinuteTime(hour: Int, minute: Int, period: Period) throws -> String {
         switch minute {
         case 0...30:
-            let time = try self.literalHourAndThirtyFirstMinutes(hour: hour, minutes: minute, period: period)
+            let time = try self.literalHourAndThirtyFirstMinute(hour: hour, minute: minute, period: period)
             return "It's \(time)."
         default:
-            let time = try self.literalHourAndThirtyLastMinutes(hour: hour, minutes: minute, period: period)
+            let time = try self.literalHourAndThirtyLastMinute(hour: hour, minute: minute, period: period)
             return "It's \(time)."
         }
     }
@@ -98,21 +97,21 @@ public struct SwiftPastTen {
         return "\(literalHour) \(period)"
     }
 
-    private func literalHourAndThirtyFirstMinutes(hour: Int, minutes: Int, period: Period) throws -> String {
+    private func literalHourAndThirtyFirstMinute(hour: Int, minute: Int, period: Period) throws -> String {
         let hour = try self.literalHour(hour: hour, period: period)
-        guard let minutes = self.numberFormatter.string(from: NSNumber(value: minutes)) else {
+        guard let minute = self.numberFormatter.string(from: NSNumber(value: minute)) else {
             throw FormatError.cannotParseNumber
         }
-        return "\(minutes) past \(hour)"
+        return "\(minute) past \(hour)"
     }
 
-    private func literalHourAndThirtyLastMinutes(hour: Int, minutes: Int, period: Period) throws -> String {
+    private func literalHourAndThirtyLastMinute(hour: Int, minute: Int, period: Period) throws -> String {
         let hourPlusOne = try self.literalHourPlusOne(hour: hour, period: period)
-        let minutesToNextHour = -(minutes - 60)
-        guard let minutes = self.numberFormatter.string(from: NSNumber(value: minutesToNextHour)) else {
+        let minutesToNextHour = -(minute - 60)
+        guard let minute = self.numberFormatter.string(from: NSNumber(value: minutesToNextHour)) else {
             throw FormatError.cannotParseNumber
         }
-        return "\(minutes) to \(hourPlusOne)"
+        return "\(minute) to \(hourPlusOne)"
     }
 
     private func literalHourPlusOne(hour: Int, period: Period) throws -> String {
