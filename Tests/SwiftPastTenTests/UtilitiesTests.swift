@@ -41,6 +41,6 @@ class UtilitiesTests: XCTestCase {
     static var allTests = [
         ("testFormattedEpochDate", testFormattedEpochDate),
         ("testFormattedAMDate", testFormattedAMDate),
-        ("testFormattedPMDate", testFormattedPMDate),
+        ("testFormattedPMDate", testFormattedPMDate)
     ]
 }
