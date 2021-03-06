@@ -9,13 +9,10 @@ on:
 jobs:
   build:
 
-    runs-on: macos-latest
+    runs-on: macos-11.0
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Install SwiftLint
-      run: brew install swiftlint
 
     - name: Linter for Sources
       run: swiftlint lint Sources
