@@ -8,7 +8,7 @@ final class SwiftPastTenTests: XCTestCase {
             7: "seven", 8: "eight", 9: "nine", 10: "ten", 11: "eleven", 12: "twelve"
         ]
         try literalHoursAM.forEach { numericalHour, literalHour in
-            XCTAssertEqual(try SwiftPastTen().tell(time: "\(numericalHour):00"), "It's \(literalHour) o'clock.")
+            XCTAssertEqual(try SwiftPastTen.live(time: "\(numericalHour):00"), "It's \(literalHour) o'clock.")
         }
 
         let literalHoursPM: [Int: String] = [
@@ -17,7 +17,7 @@ final class SwiftPastTenTests: XCTestCase {
         ]
         try literalHoursPM.forEach { numericalHour, literalHour in
             let expected = "It's \(literalHour) o'clock in the afternoon."
-            XCTAssertEqual(try SwiftPastTen().tell(time: "\(numericalHour):00"), expected)
+            XCTAssertEqual(try SwiftPastTen.live(time: "\(numericalHour):00"), expected)
         }
     }
 
@@ -28,7 +28,7 @@ final class SwiftPastTenTests: XCTestCase {
         ]
 
         try examplesAM.forEach { numericalHour, literalHour in
-            XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour).")
+            XCTAssertEqual(try SwiftPastTen.live(time: numericalHour), "It's \(literalHour).")
         }
 
         let examplesPM: [String: String] = [
@@ -37,7 +37,7 @@ final class SwiftPastTenTests: XCTestCase {
         ]
 
         try examplesPM.forEach { numericalHour, literalHour in
-            XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour).")
+            XCTAssertEqual(try SwiftPastTen.live(time: numericalHour), "It's \(literalHour).")
         }
     }
 
@@ -49,7 +49,7 @@ final class SwiftPastTenTests: XCTestCase {
         ]
 
         try examplesAM.forEach { numericalHour, literalHour in
-            XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour).")
+            XCTAssertEqual(try SwiftPastTen.live(time: numericalHour), "It's \(literalHour).")
         }
 
         let examplesPM: [String: String] = [
@@ -59,7 +59,7 @@ final class SwiftPastTenTests: XCTestCase {
         ]
 
         try examplesPM.forEach { numericalHour, literalHour in
-            XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour).")
+            XCTAssertEqual(try SwiftPastTen.live(time: numericalHour), "It's \(literalHour).")
         }
     }
 
@@ -72,7 +72,7 @@ final class SwiftPastTenTests: XCTestCase {
         ]
 
         try examples.forEach { numericalHour, literalHour in
-            XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour).")
+            XCTAssertEqual(try SwiftPastTen.live(time: numericalHour), "It's \(literalHour).")
         }
     }
 
@@ -82,7 +82,7 @@ final class SwiftPastTenTests: XCTestCase {
         ]
 
         try examplesAM.forEach { numericalHour, literalHour in
-            XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour).")
+            XCTAssertEqual(try SwiftPastTen.live(time: numericalHour), "It's \(literalHour).")
         }
 
         let examplesPM: [String: String] = [
@@ -90,7 +90,7 @@ final class SwiftPastTenTests: XCTestCase {
         ]
 
         try examplesPM.forEach { numericalHour, literalHour in
-            XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour).")
+            XCTAssertEqual(try SwiftPastTen.live(time: numericalHour), "It's \(literalHour).")
         }
     }
 
@@ -100,7 +100,7 @@ final class SwiftPastTenTests: XCTestCase {
         ]
 
         try examplesAM.forEach { numericalHour, literalHour in
-            XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour).")
+            XCTAssertEqual(try SwiftPastTen.live(time: numericalHour), "It's \(literalHour).")
         }
 
         let examplesPM: [String: String] = [
@@ -108,7 +108,7 @@ final class SwiftPastTenTests: XCTestCase {
         ]
 
         try examplesPM.forEach { numericalHour, literalHour in
-            XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour).")
+            XCTAssertEqual(try SwiftPastTen.live(time: numericalHour), "It's \(literalHour).")
         }
     }
 
@@ -119,7 +119,7 @@ final class SwiftPastTenTests: XCTestCase {
         ]
 
         try examplesAM.forEach { numericalHour, literalHour in
-            XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour).")
+            XCTAssertEqual(try SwiftPastTen.live(time: numericalHour), "It's \(literalHour).")
         }
 
         let examplesPM: [String: String] = [
@@ -127,27 +127,27 @@ final class SwiftPastTenTests: XCTestCase {
         ]
 
         try examplesPM.forEach { numericalHour, literalHour in
-            XCTAssertEqual(try SwiftPastTen().tell(time: numericalHour), "It's \(literalHour).")
+            XCTAssertEqual(try SwiftPastTen.live(time: numericalHour), "It's \(literalHour).")
         }
     }
 
     func testWhenIAskForZeroHourThenIReadMidnight() {
-        XCTAssertEqual(try SwiftPastTen().tell(time: "00:00"), "It's midnight.")
+        XCTAssertEqual(try SwiftPastTen.live(time: "00:00"), "It's midnight.")
     }
 
     func testWhenIAskForANonWellFormattedTimeThenIReadAnErrorThatMyTimeIsNotValid() {
         let errorExpectedMessage = "No error is thrown when the time string is not valid"
         let typeIsNotTheExpectedOneMessage = "Error type when the time string is not valid must be FormatError"
-        XCTAssertThrowsError(try SwiftPastTen().tell(time: "ABCD1234"), errorExpectedMessage) { error in
-            XCTAssert(error is SwiftPastTen.FormatError, typeIsNotTheExpectedOneMessage)
+        XCTAssertThrowsError(try SwiftPastTen.live(time: "ABCD1234"), errorExpectedMessage) { error in
+            XCTAssert(error is PastTenFormatError, typeIsNotTheExpectedOneMessage)
         }
 
-        XCTAssertThrowsError(try SwiftPastTen().tell(time: "24:52"), errorExpectedMessage) { error in
-            XCTAssert(error is SwiftPastTen.FormatError, typeIsNotTheExpectedOneMessage)
+        XCTAssertThrowsError(try SwiftPastTen.live(time: "24:52"), errorExpectedMessage) { error in
+            XCTAssert(error is PastTenFormatError, typeIsNotTheExpectedOneMessage)
         }
 
-        XCTAssertThrowsError(try SwiftPastTen().tell(time: "23:60"), errorExpectedMessage) { error in
-            XCTAssert(error is SwiftPastTen.FormatError, typeIsNotTheExpectedOneMessage)
+        XCTAssertThrowsError(try SwiftPastTen.live(time: "23:60"), errorExpectedMessage) { error in
+            XCTAssert(error is PastTenFormatError, typeIsNotTheExpectedOneMessage)
         }
 
     }

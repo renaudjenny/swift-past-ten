@@ -9,10 +9,10 @@ on:
 jobs:
   build:
 
-    runs-on: macos-11.0
+    runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Linter for Sources
       run: swiftlint lint Sources

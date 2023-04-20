@@ -1,26 +1,44 @@
 import Foundation
 
 public struct SwiftPastTen {
+    public var tellTime: (String) throws -> String
+
+    public init(tellTime: @escaping (String) throws -> String) {
+        self.tellTime = tellTime
+    }
+
+    public func callAsFunction(time: String) throws -> String {
+        try tellTime(time)
+    }
+}
+
+extension SwiftPastTen {
+    public static let live = Self(tellTime: { try TellTime().tell(time: $0) })
+}
+
+struct TellTime {
+    enum Period: String {
+        case AM, PM
+    }
+
     private var numberFormatter: NumberFormatter {
         let formatter = NumberFormatter()
         formatter.numberStyle = .spellOut
         return formatter
     }
 
-    public init() { }
-
-    public func tell(time: String) throws -> String {
+    func tell(time: String) throws -> String {
         let splitTime = time.split(separator: ":")
         guard splitTime.count == 2 else {
-            throw FormatError.wrongFormat
+            throw PastTenFormatError.wrongFormat
         }
         let hourAsString = String(splitTime[0])
         guard let hour = Int(hourAsString), hour < 24 else {
-            throw FormatError.wrongFormat
+            throw PastTenFormatError.wrongFormat
         }
         let minuteAsString = String(splitTime[1])
         guard let minute = Int(minuteAsString), minute < 60 else {
-            throw FormatError.wrongFormat
+            throw PastTenFormatError.wrongFormat
         }
 
         if hour == 0 && minute == 0 {
@@ -75,7 +93,7 @@ public struct SwiftPastTen {
 
     private func fallbackTime(hour: Int, minute: Int, period: Period) throws -> String {
         guard let literalMinute = self.numberFormatter.string(from: NSNumber(value: minute)) else {
-            throw FormatError.cannotParseNumber
+            throw PastTenFormatError.cannotParseNumber
         }
         let literalMinuteWithPotentialPrefix = minute < 10 ? "O \(literalMinute)" : literalMinute
         if hour == 0 || hour == 12 {
@@ -88,7 +106,7 @@ public struct SwiftPastTen {
         guard hour != 0 else { return "midnight" }
 
         guard let literalHour = self.numberFormatter.string(from: NSNumber(value: hour)) else {
-            throw FormatError.cannotParseNumber
+            throw PastTenFormatError.cannotParseNumber
         }
         guard hour != 12 else { return literalHour }
 
@@ -100,7 +118,7 @@ public struct SwiftPastTen {
     private func literalHourAndThirtyFirstMinute(hour: Int, minute: Int, period: Period) throws -> String {
         let hour = try self.literalHour(hour: hour, period: period)
         guard let minute = self.numberFormatter.string(from: NSNumber(value: minute)) else {
-            throw FormatError.cannotParseNumber
+            throw PastTenFormatError.cannotParseNumber
         }
         return "\(minute) past \(hour)"
     }
@@ -109,7 +127,7 @@ public struct SwiftPastTen {
         let hourPlusOne = try self.literalHourPlusOne(hour: hour, period: period)
         let minutesToNextHour = -(minute - 60)
         guard let minute = self.numberFormatter.string(from: NSNumber(value: minutesToNextHour)) else {
-            throw FormatError.cannotParseNumber
+            throw PastTenFormatError.cannotParseNumber
         }
         return "\(minute) to \(hourPlusOne)"
     }
@@ -127,11 +145,5 @@ public struct SwiftPastTen {
         default:
             return try self.literalHour(hour: 1, period: .PM)
         }
-    }
-}
-
-extension SwiftPastTen {
-    enum Period: String {
-        case AM, PM
     }
 }
